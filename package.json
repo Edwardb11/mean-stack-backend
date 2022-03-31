@@ -1,0 +1,26 @@
+{
+  "name": "mean-stack-backend",
+  "version": "1.0.0",
+  "description": "Proyecto de MEAN STACK",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Edwardb11/mean-stack-backend.git"
+  },
+  "author": "Edward Brito",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Edwardb11/mean-stack-backend/issues"
+  },
+  "homepage": "https://github.com/Edwardb11/mean-stack-backend#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
