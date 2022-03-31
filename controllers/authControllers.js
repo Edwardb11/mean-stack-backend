@@ -1,3 +1,5 @@
+
+const bcryptjs = require("bcryptjs");
 const Usuario = require("../models/usuario");
 
 const RegisterUsuario = async (req, res) => {
@@ -11,12 +13,14 @@ const RegisterUsuario = async (req, res) => {
       });
     }
     nuevoUsuario = new Usuario({ email, password, username });
+    // numero de caracteres y simbolos para encriptar la clave
+    const salt = bcryptjs.genSaltSync(12)
+    nuevoUsuario.password = bcryptjs.hashSync(password, salt)
     await nuevoUsuario.save();
     res.json({
       ok: true,
       email,
       username,
-      password,
       msg: "Usuario creado",
     });
   } catch (error) {
@@ -25,7 +29,7 @@ const RegisterUsuario = async (req, res) => {
       msg: "Error al registrar",
     });
   }
-  Usuario.res.json({ ok: true, email, username, password });
+
 };
 
 const loginUsuario = (req, res) => {
