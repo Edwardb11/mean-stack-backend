@@ -1,14 +1,18 @@
-const tarea = require("../models/tarea");
+const Tarea = require("../models/tarea");
 
 const createTarea = async (req, res) => {
-  const {nombre}= req.body
+  const { nombre } = req.body;
+  const id = req.uid;
 
-  const nuevatarea = new tarea({nombre});
+  const nuevatarea = new Tarea({
+    nombre, creator: id
+  });
 
-  await nuevatarea.save()
+  const tarea = await nuevatarea.save();
   res.status(200).json({
     ok: true,
     msg: "Tarea creadsa",
+    tarea
   });
 };
 module.exports = { createTarea };

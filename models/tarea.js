@@ -5,10 +5,9 @@ const tarea = new Schema({
     required: true,
     trim: true,
   },
-  creador: {
+  creator: {
     type: Schema.Types.ObjectId,
-    required: false,
-    trim: true,
+    ref: "Usuario",
   },
   createAt: {
     type: Date,
