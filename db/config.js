@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const connexionDB = async () => {
   try {
     await mongoose.connect(
-      "mongodb+srv://edwardb11:root@cluster0.ypjsn.mongodb.net/crud?retryWrites=true&w=majority"
+      process.env.DB_CONNECTION
     );
     console.log("Conectado a DB")
   } catch (error) {

@@ -1,9 +1,18 @@
 
 const bcryptjs = require("bcryptjs");
+const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const Usuario = require("../models/usuario");
 
 const RegisterUsuario = async (req, res) => {
+  const errors= validationResult(req)
+  // para validar que no manden informacion vacia
+  if (!errors.isEmpty()) {
+    return res.status(501).json({
+      ok:false,
+      errors:errors.mapped()
+    })
+  }
   const { email, password, username } = req.body;
   try {
     let usuario = await Usuario.findOne({ email });
