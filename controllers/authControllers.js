@@ -1,5 +1,6 @@
 
 const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const Usuario = require("../models/usuario");
 
 const RegisterUsuario = async (req, res) => {
@@ -17,12 +18,19 @@ const RegisterUsuario = async (req, res) => {
     const salt = bcryptjs.genSaltSync(12)
     nuevoUsuario.password = bcryptjs.hashSync(password, salt)
     await nuevoUsuario.save();
-    res.json({
-      ok: true,
-      email,
-      username,
-      msg: "Usuario creado",
-    });
+    const payload={
+      id:nuevoUsuario.id
+    }
+    jwt.sign(payload,process.env.SECRET,{expiresIn:3600},(error,token)=>{
+      res.json({
+        ok: true,
+        id:nuevoUsuario.id,
+        username,
+        msg: "Usuario creado",
+        token
+      });
+    })
+
   } catch (error) {
     res.json({
       ok: true,
