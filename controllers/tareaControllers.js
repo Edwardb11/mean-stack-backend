@@ -45,6 +45,7 @@ const updateTarea = async (req, res) => {
     const tarea = await Tarea.findByIdAndUpdate(id, { nombre },{new:true});
     return res.json({
       ok: true,
+      msg:"Tarea actualizada",
       tarea,
     });
   } catch (error) {
@@ -55,4 +56,23 @@ const updateTarea = async (req, res) => {
   }
 };
 
-module.exports = { createTarea, readTarea, updateTarea };
+// Funcion para eliminar una tarea DELETE
+const deleteTarea = async (req, res) => {
+  // Obtener el id de la tarea
+  const { id } = req.params;
+  try {
+    const tarea = await Tarea.findByIdAndRemove(id);
+    return res.json({
+      ok: true,
+      msg:"Tarea eliminada",
+      tarea,
+    });
+  } catch (error) {
+    res.status(404).json({
+      ok: false,
+      msg: "Tarea no eliminada",
+    });
+  }
+};
+
+module.exports = { createTarea, readTarea, updateTarea,deleteTarea };
