@@ -1,10 +1,11 @@
-const { Router } = require("express")
-const { createTarea } = require("../controllers/tareaControllers")
-const verifyToken = require("../middlewares/verifyToken")
+const { Router } = require("express");
+const { createTarea } = require("../controllers/tareaControllers");
+const { readTarea } = require("../controllers/tareaControllers");
+const verifyToken = require("../middlewares/verifyToken");
 
+const router = new Router();
 
-const router = new Router()
+router.post("/create", [verifyToken], createTarea);
+router.get("/read", [verifyToken], readTarea);
 
-router.post("/create",[verifyToken],createTarea)
-
-module.exports = router
+module.exports = router;
