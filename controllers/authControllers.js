@@ -1,18 +1,8 @@
-
 const bcryptjs = require("bcryptjs");
-const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const Usuario = require("../models/usuario");
 
 const RegisterUsuario = async (req, res) => {
-  const errors= validationResult(req)
-  // para validar que no manden informacion vacia
-  if (!errors.isEmpty()) {
-    return res.status(501).json({
-      ok:false,
-      errors:errors.mapped()
-    })
-  }
   const { email, password, username } = req.body;
   try {
     let usuario = await Usuario.findOne({ email });
@@ -24,29 +14,32 @@ const RegisterUsuario = async (req, res) => {
     }
     nuevoUsuario = new Usuario({ email, password, username });
     // numero de caracteres y simbolos para encriptar la clave
-    const salt = bcryptjs.genSaltSync(12)
-    nuevoUsuario.password = bcryptjs.hashSync(password, salt)
+    const salt = bcryptjs.genSaltSync(12);
+    nuevoUsuario.password = bcryptjs.hashSync(password, salt);
     await nuevoUsuario.save();
     const payload = {
-      id: nuevoUsuario.id
-    }
-    jwt.sign(payload, process.env.SECRET, { expiresIn: 3600 }, (error, token) => {
-      res.json({
-        ok: true,
-        id: nuevoUsuario.id,
-        username,
-        msg: "Usuario creado",
-        token
-      });
-    })
-
+      id: nuevoUsuario.id,
+    };
+    jwt.sign(
+      payload,
+      process.env.SECRET,
+      { expiresIn: 3600 },
+      (error, token) => {
+        res.json({
+          ok: true,
+          id: nuevoUsuario.id,
+          username,
+          msg: "Usuario creado",
+          token,
+        });
+      }
+    );
   } catch (error) {
     res.json({
       ok: true,
       msg: "Error al registrar",
     });
   }
-
 };
 
 const loginUsuario = async (req, res) => {
@@ -62,7 +55,7 @@ const loginUsuario = async (req, res) => {
     }
 
     // Comparar el password encriptado
-    const passwordValido = bcryptjs.compareSync(password, usuario.password)
+    const passwordValido = bcryptjs.compareSync(password, usuario.password);
     if (!passwordValido) {
       return res.status(401).json({
         ok: false,
@@ -71,17 +64,22 @@ const loginUsuario = async (req, res) => {
     }
 
     const payload = {
-      id: usuario.id
-    }
-    jwt.sign(payload, process.env.SECRET, { expiresIn: 3600 }, (error, token) => {
-      res.json({
-        ok: true,
-        id: usuario.id,
-        username:usuario.username,
-        msg: "Inicio sesion",
-        token
-      });
-    })
+      id: usuario.id,
+    };
+    jwt.sign(
+      payload,
+      process.env.SECRET,
+      { expiresIn: 3600 },
+      (error, token) => {
+        res.json({
+          ok: true,
+          id: usuario.id,
+          username: usuario.username,
+          msg: "Inicio sesion",
+          token,
+        });
+      }
+    );
   } catch (error) {
     res.json({
       ok: true,

@@ -4,6 +4,7 @@ const {
   RegisterUsuario,
   loginUsuario,
 } = require("../controllers/authControllers");
+const validationErrors = require("../middlewares/validationErros");
 const authRouter = Router();
 
 authRouter.post(
@@ -15,6 +16,7 @@ authRouter.post(
       "La contraseña tiene que ser de 6 caracteres como minimo "
     ).isLength({ min: 6 }),
     check("username", "El nombre de usuario es requerido").not().isEmpty(),
+    validationErrors,
   ],
   RegisterUsuario
 );
@@ -26,6 +28,7 @@ authRouter.post(
       "password",
       "La contraseña tiene que ser de 6 caracteres como minimo "
     ).isLength({ min: 6 }),
+    validationErrors,
   ],
   loginUsuario
 );
